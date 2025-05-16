@@ -1,0 +1,92 @@
+[
+  {
+    "question": "值类型和引用类型的区别？",
+    "code": "",
+    "answer": "值类型：\n\t特点：1.直接存储数据 2.分配在栈内存 3.栈内自动回收，无需GC 4.访问快，适合小型数据\n\t类型：int、float、double、bool、char、struct、enum等\n引用类型：\n\t特点：1.存储数据的地址 2.分配在堆内存 3.由GC管理 4.访问慢，适合复杂对象\n\t类型：class、string、interface、数组、delegate、object等"
+  },
+  {
+    "question": "深拷贝和浅拷贝区别？",
+    "code": "",
+    "answer": "浅拷贝：\n\t浅拷贝创建一个新的对象，但只复制原始对象的基本数据类型的字段或引用，而不复制引用的对象，所以拷贝出的对象和原对象的引用指向相同的对象。修改新对象会影响到原对象。\n\n深拷贝：\n深拷贝创建一个新的对象，它会复制整个对象结构，包括引用的对象，确保新对象和原对象之间的所有关系是独立的，所以修改新对象并不会影响到原对象。"
+  },
+  {
+    "question": "什么是装箱和拆箱操作？",
+    "code": "装箱：\nint temp = 5;\nObject obj = temp;\n\n拆箱：\nObject obj = temp;\nint i = (int) obj;",
+    "answer": "装箱：\n值类型转换为Object类型的过程\n\n拆箱：\nObject类型转回值类型的过程"
+  },
+  {
+    "question": "C#与.NET的关系是什么？",
+    "code": "",
+    "answer": "1.C#是面向对象的编程语言，专为.NET平台设计\n\n2..NET是一个跨语言的开发框架，包含运行时环境(CLR)、类库(BCL)和工具\n\n3.C#代码通过.NET编译器编译为中间语言(IL)，由CLR在运行时转换为机器码"
+  },
+  {
+    "question": "接口和抽象类的区别？",
+    "code": "",
+    "answer": "接口：\n不包含字段或具体方法的实现\n支持多继承\n用于定义行为\n\n抽象类：\n可包含字段、具体方法和抽象方法\n单继承\n用于共享代码"
+  },
+  {
+    "question": "async和await的作用是什么？",
+    "code": "",
+    "answer": "用于异步编程，避免阻塞主线程\n\nasync标记异步方法，await等待异步操作完成"
+  },
+  {
+    "question": "out和ref关键字的区别？",
+    "code": "示例代码：\nvoid Modify(ref int x) {x++;}\nvoid GetValue(out int y){y = 10;}",
+    "answer": "ref：参数必须在传入前初始化，方法内可修改值\nout：参数无需初始化，方法内必须赋值"
+  },
+  {
+    "question": "异常处理的关键字有哪些？",
+    "code": "",
+    "answer": "try：定义可能抛出异常的代码块\ncatch：捕获并处理异常\nfinally：无论是否发生异常，都会执行的代码(如释放资源)\nthrow：抛出异常"
+  },
+  {
+    "question": "string和stringbuilder的区别？",
+    "code": "",
+    "answer": "string：不可变，每次修改都会创建新对象，适合少量的操作\nstringbuilder：可变，二倍空间扩容。适合频繁修改字符串"
+  },
+  {
+    "question": "C#中readonly和const的区别？",
+    "code": "示例代码：\nconst int Max = 1000;\n\nreadonly List<string> Names = new List<string>();",
+    "answer": "const：\n在声明时赋值，仅支持基本类型(int、string等)，不占用堆栈内存。适用于定义数学常量，全局配置的值等\n\nreadonly：\n可在声明时或构造函数中赋值，支持任意类型，作为字段存储在内存中。适用于对象或数组的不可变引用。"
+  },
+  {
+    "question": "struct和class的区别？",
+    "code": "",
+    "answer": "struct：\n值类型，不支持继承，适合轻量级数据(坐标点等)\n\nclass:\n引用类型，支持继承，适合复杂数据"
+  },
+  {
+    "question": "params关键字的作用？",
+    "code": "示例代码：\npublic void Log(params string[] messages) { ... }\nLog(\"hello\",\"world\")；//参数自动转化为数组",
+    "answer": "允许方法接受可变数量的参数，参数必须是数组类型"
+  },
+  {
+    "question": "如何实现深拷贝？",
+    "code": "",
+    "answer": "1.逐层赋值对象 （递归复制）\n2.序列化：使用BinaryFormatter或System.Text.Json序列化后反序列化\n3.第三方库：AutoMapper或实现ICloneable接口"
+  },
+  {
+    "question": "is 和 as关键字的区别?",
+    "code": "示例代码：\nif(obj is string s) { ... }\n\nstring str = obj as string;",
+    "answer": "is：\n检查对象是否兼容于指定类型\n\nas：\n尝试将对象转化为指定类型，失败返回null"
+  },
+  {
+    "question": "C#中的委托是什么？",
+    "code": "",
+    "answer": "委托是存有某种方法引用的引用类型变量，它可以作为另一个方法的参数来进行传递，用来实现事件和回调方法。\n\n委托是类型安全的一种函数指针，它具有明确的参数类型和返回值类型。"
+  },
+  {
+    "question": "什么是多播委托？",
+    "code": "示例代码：\npublic class Progrom\n{\n\tpublic static void Main(string[] args)\n\t{\n\t\tMyDelegate myDelegate = new MyDelegate(ShowMessage);\n\t\tmyDelegate += ShowAnotherMessage;\n\t\t// 调用委托 将依次调用ShowMessage和ShowAnotherMessage\n\t\tmyDelegate(\"hello,i am c#\");\n\t}\n\tpublic static void ShowMessage(string message)\n\t{\n\t\tConsole.WriteLine(\"Message: \" + message);\n\t}\n\t\n\tpublic static void ShowAnotherMessage(string message)\n\t{\n\t\tConsole.WriteLine(\"Another Message: \" + message);\n\t}\n}",
+    "answer": "多播委托：\n一个委托可以指向多个方法。使用+=运算符将多个方法添加到委托中，-=运算符移除"
+  },
+  {
+    "question": "Action和Func的作用？",
+    "code": "// Action示例\nAction<string> actionDelegate = ShowMessage；\nactionDelegate(\"hello i am xc\");\n\n// Func示例\nFunc<int,int,int> funcDelegate = Add;\nint result = funcDelegate(10,20);\n\npublic static void ShowMessage(string message)\n{\n\tConsole.WriteLine(message);\n}\n\npublic static int Add(int a,int b)\n{\n\treturn a + b;\n}",
+    "answer": "Action和Func为C#提供的内置委托,可以简化委托的声明\n\nAction：用于指向没有返回值的方法。\n\nFunc：用于指向有返回值的方法。"
+  },
+  {
+    "question": "什么是Event(事件)？",
+    "code": "",
+    "answer": "事件是委托的一种特殊形式，通常用于实现观察者模式。\n\n特点：\n\t事件基于委托。\n\t事件只能在声明它的类内部触发，外部只能订阅\\取消订阅"
+  }
+]

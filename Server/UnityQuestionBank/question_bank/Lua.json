@@ -1,0 +1,82 @@
+[
+  {
+    "question": "Lua中拼接字符串的方式有哪些？",
+    "code": "",
+    "answer": "1. ..运算符\n\n2.string.format(\"hello,%s\",name)\n\n3.table.concat(table,sep,start,end)\neg:\nfruits = {\"apple\", \"banana\", \"cherry\"}\r\nprint(table.concat(fruits, \", \")) \n-- 输出: apple, banana, cherry"
+  },
+  {
+    "question": "ipairs和pairs的区别？",
+    "code": "",
+    "answer": "ipairs和pairs都是用于遍历表。\n\nipairs：遍历数组部分(连续的整数键，从1开始)，遇到nil停止遍历。\n\npairs：遍历表中所有键值对，但遍历顺序不固定。"
+  },
+  {
+    "question": "Lua中删除表元素的方式有哪些？",
+    "code": "",
+    "answer": "1.直接将删除元素的键的值设为nil。\n   缺点：可能会出现表中出现nil，会影响到#运算符和ipairs的遍历\n\n2.table.remove(table,pos) （删除指定位置pos的元素，并自动将后续元素前移）\n   缺点：1.仅适用于数组部分\n              2.时间复杂度为O(n) 频繁操作可能会影响性能\n3.重新构建表\n   如需批量删除数组元素，优先重建表而非多次调用table.remove"
+  },
+  {
+    "question": "函数冒号和点的区别是什么？",
+    "code": "",
+    "answer": "冒号的第一个参数是self，指向调用该函数的表。\n点的第一个参数为实际传入的第一个参数。"
+  },
+  {
+    "question": "Lua如何实现面向对象？",
+    "code": "local MainClass = {name= \"Main\"}\n-- 类的构造函数\nfunction MainClass:new(name)\n\tlocal obj = { }\n\tsetmetatable(obj, {__index = self})\n\tobj.name = name or self.name\n\treturn obj\nend\n\nfunction MainClass:say()\n\tprint(\"hello, Im \" .. self.name)\nend\n\n-- 继承\nlocal SubClass = MainClass:new( )\nfunction SubClass:new(name)\n\tlocal obj = MainClass:new(name)\n\tsetmetatable(obj,{__index = self})\n\treturn obj\nend\n\n-- 重写\nfunction SubClass:say()\n\tprint(\"Hi,Iam \" .. self.name)\nend",
+    "answer": "通过table和元表实现，__index实现继承。"
+  },
+  {
+    "question": "Lua中的闭包是什么？",
+    "code": "-- 计数器\nfunction createCounter( )\n\tlocal count = 0\n\treturn function( ) count = count + 1 return count end\nend\n\n-- 实现私有变量(数据封装)\nfunction createPrivate(name)\n\tlocal privateName = name -- 私有变量\n\treturn\n\t\t{\n\t\t\tgetName = function( ) return privateName end\n\t\t\tsetName = function(newName) privateName = newName end\n\t\t}\nend\nlocal p = createPrivate(\"xc\")\nprint(p.getName()) -- 输出 \"xc\"\n-- 无法直接访问privateName,实现封装",
+    "answer": "闭包：内部函数可以捕获外部函数的变量，内部捕获的变量会一直存在，直到闭包被销毁。多个闭包捕获同一外部变量时，每个闭包的变量相独立。\n\n场景：实现私有变量、回调函数(按钮点击事件)、计数器\n\n缺点：导致内存泄漏(长期保存外部的引用导致内存无法释放)"
+  },
+  {
+    "question": "Lua中table介绍一下？",
+    "code": "",
+    "answer": "1.table是lua的一种数据结构，它可以表示数组，字典，集合，对象等。\n2.table它无需预先定义大小，可动态添加或删除元素。\n3.table可以存储不同类型的数据，类如 数字，字符串，函数，table等。"
+  },
+  {
+    "question": "使用table实现栈",
+    "code": "local stack = { }\nfunction stack.push(s,v)\n\ttable.insert(s,v)end\nend\nfunction stack.pop(s)\n\ttable.remove(s)\nend",
+    "answer": "可以通过table的insert和remove实现栈"
+  },
+  {
+    "question": "table实现队列",
+    "code": "",
+    "answer": "local queue = {first = 0,last = -1}\nfunction queue.push(q,v)\n\tq.last = q.last + 1\n\tq[q.last] = v\nend\nfunction queue.pop(q)\n\tif q.first > q.last then return nil end\n\tlocal v = q[q.first]\n\tq[q.first] = nil\n\tq.first = q.first + 1\n\treturn v\nend"
+  },
+  {
+    "question": "table的标准库方法有哪些？",
+    "code": "",
+    "answer": "1.table.insert(table,pos,value) 向数组插入元素\n\n2.table.remove(table,pos) 删除数组指定位置的元素，后续元素前移\n\n3.table.sort(table,function) 原地排序数组 底层为快速排序\n\n4.table.concat(table,sep,start,end) 将数组元素拼接为字符串"
+  },
+  {
+    "question": "Lua递归会导致栈溢出错误吗？",
+    "code": "计算阶乘\n1.普通递归\nfunction normal(n)\n\tif n<=0 then\n\t\treturn 1\n\telse\n\t\treturn n * normal(n - 1)\n\tend\nend\n\n2.尾递归\nfunction tail(n,acc)\n\tacc = acc or 1\n\tif n <= 0 then\n\t\treturn acc\n\telse\n\t\treturn tail(n-1,acc * n)\n\tend\nend",
+    "answer": "会的，Lua递归可能会导致栈溢出错误。因为每次调用递归函数时，Lua都会将函数的参数，局部变量和返回地址等信息压入栈中，然后在函数返回时将这些信息弹出堆栈，如果递归深度过大，堆栈可能会耗尽，导致栈溢出错误。\n\n优化：\n使用尾递归来优化递归函数。在尾递归中，函数的最后一个操作是调用自身，并且返回值不需要进行任何其它操作，而是直接返回给上层调用，每次递归调用将不在创建新的栈帧，而是复用当前栈帧。"
+  },
+  {
+    "question": "Lua中如何计算数组的长度?",
+    "code": "",
+    "answer": "使用 # 运算符\n\neg：只适用于数组中连续的部分元素，即从1开始的整数下标。"
+  },
+  {
+    "question": "Lua中的弱表是什么？如何创建？",
+    "code": "",
+    "answer": "弱表是Lua中解决循环引用问题的核心机制，通过设置表的__mode字段，可以指定表的键或值或键值为弱引用，允许Lua自动回收无外部引用的对象。\n\n场景：缓存对象 （使用弱值表缓存数据，当外部没有其它引用时，缓存项自动失效）\nlocal cache = setmetatable({ },{__mode = \"v\"})\nfunction getResource(name)\n\tif not cache[name] then\n\t\tcache[name] = loadResource(name)\n\tend\n\treturn cache[name]\nend"
+  },
+  {
+    "question": "Lua如何实现一个只读的表呢？",
+    "code": "function createReadOnlyTable(t)\n\tlocal proxy = { }\n\tlocal mt = {\n\t\t__index = t,\n\t\t__newindex = function(_,key,value)\n\t\t\terror(“阻止写入”)\n\t\tend\n\t\t__metatable = false\n\t\t}\n\t\tsetmetatable(proxy,mt)\n\t\treturn proxy\nend",
+    "answer": "可以通过__index和__newindex实现\n\n1.读取操作：通过__index元方法指向原始表，允许正常读取操作\n\n2.写入操作：通过__newindex元方法阻止任何修改操作"
+  },
+  {
+    "question": "pcall和xpcall的区别？",
+    "code": "",
+    "answer": "1.pcall 捕获异常返回状态码和错误信息\n\n2.xpcall 额外触发错误处理函数"
+  },
+  {
+    "question": "Lua的8种基本数据类型是哪些？",
+    "code": "",
+    "answer": "nil(空值) boolean(布尔值) number(数值) string(字符串) userdata(C指针) function(函数) thread(协程) table(表)"
+  }
+]
